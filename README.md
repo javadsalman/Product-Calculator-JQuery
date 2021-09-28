@@ -3,6 +3,7 @@
 * IIFE
 * JQuery AJAX
 * Event Delegation
+* Button Input Support like DEL, ESC, ENTER
 * Responsive Design
 * Only Bootstrap 5 without CSS
 
