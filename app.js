@@ -9,7 +9,7 @@ const UIController = (function(){
     const addButton = $('#add-button');
     const tableBody = $('#table-body');
     const tlResult = $('#tl-result');
-    const dollarResult = $('#dollar-result');
+    const euroResult = $('#euro-result');
 
     function getNameandPrice(){
         const name = nameInput.val();
@@ -57,8 +57,8 @@ const UIController = (function(){
                 <td class="name-col">${rowData.name}</td>
                 <td class="price-col">${rowData.price}$</td>
                 <td id="button-row-${rowData.index}" class="text-end change-button-col">
-                    <span class="change-button py-2 px-3">
-                        <i class="far fa-edit fa-lg"></i>
+                    <span class="change-button py-2 px-3 btn">
+                        <i class="far fa-edit fa-lg text-light"></i>
                     </span>
                 </td>
             </tr>`
@@ -118,8 +118,8 @@ const UIController = (function(){
     function changeTL(value){
         tlResult.text(`${value} TL`);
     }
-    function changeDollar(value){
-        dollarResult.text(`${value}$`);
+    function changeeuro(value){
+        euroResult.text(`${value}€`);
     }
 
 
@@ -146,7 +146,7 @@ const UIController = (function(){
         select,
         cancel,
         changeTL,
-        changeDollar,
+        changeeuro,
         disSelectAll,
     }
 
@@ -185,25 +185,25 @@ const StorageController = (function(){
 const ProductController = (function(){
     function getPriceResults(data, callback){
         const response = $.get({
-            url: 'https://api.exchangeratesapi.io/latest',
-            data: {base: 'USD', symbols: 'TRY'},
+            url: 'http://api.exchangeratesapi.io/v1/latest',
+            data: {access_key: 'fa1c84ee758a9b1cacd94959386c0667'},
             async: true,
             success: function(response){
-                const dollarRate = response.rates.TRY;
-                const total = caclulateTotal(data, dollarRate)
+                const euroRate = response.rates.TRY;
+                const total = caclulateTotal(data, euroRate)
                 callback(total)
             }
         });
     }
 
-    function caclulateTotal(data, dollarRate){
+    function caclulateTotal(data, euroRate){
         let total = 0;
         for(let i=0; i<data.length; i++){
             total += data[i].price; 
         }
-        const totalTL = Number((total*dollarRate).toFixed(2))
+        const totalTL = Number((total*euroRate).toFixed(2))
         return {
-            dollar: total,
+            euro: total,
             tl: totalTL
         }
     }
@@ -255,10 +255,10 @@ const ProductController = (function(){
 const AppContorller = (function(uicl, scl, pcl){
     function showTotal(data){
         uicl.changeTL('loading...');
-        uicl.changeDollar('loading...');
+        uicl.changeeuro('loading...');
         pcl.getPriceResults(data, function(total){
             uicl.changeTL(total.tl);
-            uicl.changeDollar(total.dollar);
+            uicl.changeeuro(total.euro);
         })
     }
 
