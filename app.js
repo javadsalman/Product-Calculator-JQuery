@@ -8,7 +8,7 @@ const UIController = (function(){
     const cancelButton = $('#cancel-button');
     const addButton = $('#add-button');
     const tableBody = $('#table-body');
-    const tlResult = $('#tl-result');
+    const dollarResult = $('#dollar-result');
     const euroResult = $('#euro-result');
 
     function getNameandPrice(){
@@ -55,7 +55,7 @@ const UIController = (function(){
             `<tr id="row-${rowData.index}" class="table-row user-select-none">
                 <th class="index-col user-select-none"></th>
                 <td class="name-col">${rowData.name}</td>
-                <td class="price-col">${rowData.price}$</td>
+                <td class="price-col">${rowData.price} €</td>
                 <td id="button-row-${rowData.index}" class="text-end change-button-col">
                     <span class="change-button py-2 px-3 btn">
                         <i class="far fa-edit fa-lg text-light"></i>
@@ -115,11 +115,11 @@ const UIController = (function(){
     }
 
 
-    function changeTL(value){
-        tlResult.text(`${value} TL`);
+    function changeDollar(value){
+        dollarResult.text(`${value} $`);
     }
-    function changeeuro(value){
-        euroResult.text(`${value}€`);
+    function changeEuro(value){
+        euroResult.text(`${value} €`);
     }
 
 
@@ -145,8 +145,8 @@ const UIController = (function(){
         getIndexFromRow,
         select,
         cancel,
-        changeTL,
-        changeeuro,
+        changeDollar,
+        changeEuro,
         disSelectAll,
     }
 
@@ -189,7 +189,7 @@ const ProductController = (function(){
             data: {access_key: 'fa1c84ee758a9b1cacd94959386c0667'},
             async: true,
             success: function(response){
-                const euroRate = response.rates.TRY;
+                const euroRate = response.rates.USD;
                 const total = caclulateTotal(data, euroRate)
                 callback(total)
             }
@@ -201,10 +201,10 @@ const ProductController = (function(){
         for(let i=0; i<data.length; i++){
             total += data[i].price; 
         }
-        const totalTL = Number((total*euroRate).toFixed(2))
+        const totalDollar = Number((total*euroRate).toFixed(2))
         return {
             euro: total,
-            tl: totalTL
+            dollar: totalDollar
         }
     }
     
@@ -254,11 +254,11 @@ const ProductController = (function(){
 
 const AppContorller = (function(uicl, scl, pcl){
     function showTotal(data){
-        uicl.changeTL('loading...');
-        uicl.changeeuro('loading...');
+        uicl.changeDollar('loading...');
+        uicl.changeEuro('loading...');
         pcl.getPriceResults(data, function(total){
-            uicl.changeTL(total.tl);
-            uicl.changeeuro(total.euro);
+            uicl.changeDollar(total.dollar);
+            uicl.changeEuro(total.euro);
         })
     }
 
