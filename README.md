@@ -7,4 +7,4 @@
 * Responsive Design
 * Only Bootstrap 5 without CSS
 
-![screenshot](https://i.hizliresim.com/tw6yusq.png)
+![screenshot](https://github.com/cavadsalman/Product-Calculator-JQuery/blob/main/Screenshot.JPG)
